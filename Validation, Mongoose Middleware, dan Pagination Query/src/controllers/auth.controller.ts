@@ -133,7 +133,7 @@ export default {
         }
     },
     async register(req: Request, res: Response) {
-        const { fullName, username, email, password } = req.body;
+        const { fullName, username, email, password, role } = req.body;
         try {
             await validateRegisterSchema.validate({
                 fullName,
@@ -141,13 +141,15 @@ export default {
                 email,
                 password,
             });
+            
+            const userRole = role || "user";
 
             const user = await UserModel.create({
                 fullName,
                 username,
                 email,
                 password,
-                role: "user", // default role
+                role: userRole, // default role
             });
             res.json({
                 message: "User registered successfully",
